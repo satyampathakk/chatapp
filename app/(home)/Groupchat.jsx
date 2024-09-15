@@ -8,6 +8,7 @@ import SendBox from '../../components/SendBox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getUsername } from '../../components/Storage';  
 import LoadingSprinner from '../../components/LoadingSpinner';
+import { getIPAddress } from '../../components/IpStorage';
 
 const Groupchat = () => {
   const [messages, setMessages] = useState([]);
@@ -16,7 +17,8 @@ const Groupchat = () => {
   const isFocused = useIsFocused();
   const messageLoad = async () => {
     try {
-      const res = await axios.get('http://13.51.121.227:80/messages/');
+      const ip=await getIPAddress()
+      const res = await axios.get(`${ip}/messages/`);
       const response = await res.data;
       setMessages(response);
       setLoading(false);

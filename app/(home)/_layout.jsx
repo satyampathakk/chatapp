@@ -24,6 +24,14 @@ export default function Chatlayout() {
           tabBarIcon: ({ color ,focused }) => <TabIcon source={telegramIcon} size={28} color={color} focused={focused}  />
         }} 
       />
+
+      <Tabs.Screen 
+        name="Settings" 
+        options={{
+          title: 'Advance Settings',
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+        }} 
+      />
      
       <Tabs.Screen 
         name="Comingsoon" 
@@ -32,6 +40,8 @@ export default function Chatlayout() {
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
         }} 
       />
+
+
     </Tabs>
   );
 }

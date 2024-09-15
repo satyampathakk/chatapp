@@ -8,11 +8,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import { Link } from 'expo-router';
 import { clearUsername } from '../../components/Storage';
+import { getIPAddress } from '../../components/IpStorage';
 const Comingsoon = () => {
 const isFocused = useIsFocused();
 const usageLoaders= ()=>{
   const asyncLoader=async () =>{
-    const response = await axios.get('http://13.51.121.227:80/system-usage');
+    const ip=await getIPAddress()
+    const response = await axios.get(`${ip}/system-usage`);
     const data =response.data
     console.log(data)
     setSysusage(data)

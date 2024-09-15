@@ -1,11 +1,12 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import axios from 'axios'
-
+import { getIPAddress } from './IpStorage'
 const SendBox = ({usr,Mes}) => {
   const [sendmsg,setSendmsg]=useState('')
   const  sendfunc = async () => {
-    const response= await axios.post("http://13.51.121.227:80/messages/",{username:`${usr}`,msg:`${sendmsg}`})
+    const ip=await getIPAddress()
+    const response= await axios.post(`${ip}/messages/`,{username:`${usr}`,msg:`${sendmsg}`})
     setSendmsg('')
     res=response.data;
     Mes();
