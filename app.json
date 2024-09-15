@@ -3,7 +3,7 @@
     "name": "chatter",
     "slug": "chatter",
     "version": "1.0.0",
-      "scheme": "chatter",
+    "scheme": "chatter",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
