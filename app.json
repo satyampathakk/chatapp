@@ -1,13 +1,12 @@
 {
   "expo": {
-    "name": "YourAppName",
+    "name": "ChatHub",
     "slug": "your-app-slug",
     "version": "1.0.0",
+    "scheme":"chatter",
     "android": {
       "permissions": [
         "INTERNET",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
         "SYSTEM_ALERT_WINDOW",
         "VIBRATE"
       ],
@@ -20,6 +19,11 @@
         },
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library.",
         "NSCameraUsageDescription": "This app needs access to your camera."
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "935b9ae1-e92d-4b1b-acad-8d419052f089"
       }
     }
   }

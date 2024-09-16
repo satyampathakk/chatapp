@@ -46,6 +46,7 @@ const Groupchat = () => {
 
   return ( loading?<LoadingSprinner/> 
     :
+    <SafeAreaView>
     <LinearGradient 
       colors={['purple', 'black']}  
       start={{ x: 0, y: 1 }}
@@ -68,6 +69,7 @@ const Groupchat = () => {
         </View>
       </View>
     </LinearGradient>
+    </SafeAreaView>
   );
 };
 

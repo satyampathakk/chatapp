@@ -13,6 +13,7 @@ export default function Chatlayout() {
         name="Chat" 
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
         }} 
       />
@@ -21,14 +22,17 @@ export default function Chatlayout() {
         name="Groupchat" 
         options={{
           title: 'Message',
+          headerShown: false,
           tabBarIcon: ({ color ,focused }) => <TabIcon source={telegramIcon} size={28} color={color} focused={focused}  />
-        }} 
+        }
+      } 
       />
 
       <Tabs.Screen 
         name="Settings" 
         options={{
           title: 'Advance Settings',
+          headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
         }} 
       />
@@ -37,6 +41,7 @@ export default function Chatlayout() {
         name="Comingsoon" 
         options={{
           title: 'Coming Soon',
+          headerShown: false,
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
         }} 
       />

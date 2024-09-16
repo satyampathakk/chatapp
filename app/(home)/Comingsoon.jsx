@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Link } from 'expo-router';
 import { clearUsername } from '../../components/Storage';
 import { getIPAddress } from '../../components/IpStorage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const Comingsoon = () => {
 const isFocused = useIsFocused();
 const usageLoaders= ()=>{
@@ -34,6 +35,7 @@ const usageLoaders= ()=>{
   const[isLoaded,setIsloaded]=useState(true)
 useEffect(usageLoaders,[isFocused])
   return (
+    <SafeAreaView>
     <LinearGradient 
     colors={['purple', 'black']}  
     start={{ x: 0, y: 1 }}
@@ -53,6 +55,7 @@ useEffect(usageLoaders,[isFocused])
   </View>
     </View>
     </LinearGradient>
+    </SafeAreaView>
   );
 };
 

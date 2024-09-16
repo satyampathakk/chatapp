@@ -2,15 +2,17 @@ import { Text, View } from 'react-native';
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient'; 
 import { Link } from "expo-router";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Chat = () => {
   return (
+    <SafeAreaView>
     <View className="h-screen w-full bg-white">
       <LinearGradient
         colors={['purple', 'white']}  
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 0 }}
-        className="w-full h-[70%] flex-row justify-between"
+        className="w-full h-[85%] flex-row justify-between"
       >
         <View className="w-[48%] h-2/5 ">
           <LinearGradient
@@ -58,6 +60,7 @@ const Chat = () => {
       </View>
       </LinearGradient>
     </View>
+    </SafeAreaView>
   );
 };
 
