@@ -9,17 +9,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { getUsername } from '../../components/Storage';  
 import LoadingSprinner from '../../components/LoadingSpinner';
 import { getIPAddress } from '../../components/IpStorage';
+import { publicKey } from '../../utils/pgpkey';
 
 const Groupchat = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState(''); 
+  const [currentUser, setCurrentUser] = useState('');
+  const [keys,setkey] = useState([]);
   const isFocused = useIsFocused();
   const messageLoad = async () => {
     try {
       const ip=await getIPAddress()
+      setkey(await publicKey());
       const res = await axios.get(`${ip}/messages/`);
       const response = await res.data;
+      console.log(response.data)
       setMessages(response);
       setLoading(false);
     } catch (error) {
@@ -51,7 +55,7 @@ const Groupchat = () => {
       colors={['purple', 'black']}  
       start={{ x: 0, y: 1 }}
       end={{ x: 1, y: 0 }}
-      className="w-full h-auto flex-row justify-between "
+      className="w-full h-full flex-row justify-between "
     >
       <View style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -65,7 +69,7 @@ const Groupchat = () => {
         </ScrollView>
 
         <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }} >
-          <SendBox usr={currentUser} Mes={messageLoad} />
+          <SendBox usr={currentUser} Mes={messageLoad} pubkey={keys} />
         </View>
       </View>
     </LinearGradient>

@@ -14,31 +14,10 @@ const CustomButton = () => {
       if (!networkState.isConnected) {
         Alert.alert('Network Error', 'No network connection available');
       }
-      else{
-        Alert.alert("network available")
-      }
-      const ip = await getIPAddress();
-      const response = await fetch(`${ip}/users/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: value }), 
-      });
-
-      if (response.ok) {
         Alert.alert('Logged in successfully');
         saveUsername(value);
         router.push('/Chat');
-      } else if (response.status === 400) {
-        Alert.alert('Logged in with old UserName');
-        saveUsername(value);
-        router.push('/Chat');
-      } else {
-        const errorData = await response.json();
-        Alert.alert('Error occurred', errorData.message || 'Something went wrong');
-      }
-    } catch (error) {
+    }catch (error) {
       Alert.alert('Network Error', error.message || 'Something went wrong');
     }
   };

@@ -2,14 +2,28 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { getIPAddress } from './IpStorage'
+// import encryptMessage from '../../utils/encrypt'
 const SendBox = ({usr,Mes}) => {
   const [sendmsg,setSendmsg]=useState('')
+  // const [encryptedMes,setEncryptedMes]=useState('')
   const  sendfunc = async () => {
+    // setEncryptedMes(await encryptMessage({sendmsg,key}))
     const ip=await getIPAddress()
-    const response= await axios.post(`${ip}/messages/`,{username:`${usr}`,msg:`${sendmsg}`})
+    console.log(ip)
+    try{
+      
+      const response = await axios.post(`${ip}/messages/`, {
+        username: usr,
+        msg: sendmsg
+      });
+    
+    console.log("working")
     setSendmsg('')
     res=response.data;
-    Mes();
+    Mes();}
+    catch(error){
+      console.log(error)
+    }
   }
   return (
     <View  className="absolute bottom-0 flex-row w-screen">

@@ -1,0 +1,9 @@
+    const pubKey = await publicKey();
+    const pgpMessage = new TextEncoder().encode(message);
+    let pubKeyObj;
+    try {
+      pubKeyObj = await openpgp.readArmoredKey(pubKey);
+    } catch (keyError) {
+      console.error("Error reading armored key:", keyError);
+      throw keyError;
+    }

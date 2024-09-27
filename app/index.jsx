@@ -8,7 +8,6 @@ import { router } from 'expo-router';
 const a=require("../assets/icons/home.webp");
 import { useEffect,useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-
 export default function index() {
   const isFocused = useIsFocused();
   const checkIfLoggedIn =async () => {

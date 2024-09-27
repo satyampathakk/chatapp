@@ -42,11 +42,27 @@ export default function Chatlayout() {
         options={{
           title: 'Coming Soon',
           headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="hashtag" color={color} />,
         }} 
       />
 
-
+      <Tabs.Screen 
+        name="PGPKeyGenerator" 
+        options={{
+          title: 'PGPKManageMent',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="lock" color={color} />,
+        }} 
+      />
+      <Tabs.Screen 
+        name="Dm" 
+        options={{
+          title: 'Dm',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="telegram" color={color} />,
+        }} 
+      />
     </Tabs>
+    
   );
 }

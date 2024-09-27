@@ -26,7 +26,11 @@ const MessageBox = ({ id, msg, usr, tmp }) => {
 
         <Text className="text-yellow-50 mb-1">{msg}</Text>
 
-        <Text className="text-yellow-50 text-right">{tmp}</Text>
+       {tmp? <Text className="text-yellow-50 text-right">{tmp}</Text>: 
+       <Text>
+        
+       </Text>
+       }
       </LinearGradient>
     </View>
   );
