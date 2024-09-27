@@ -4,9 +4,8 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 import 'react-native-get-random-values';
 import { createMessage ,readKey ,encrypt} from 'openpgp/dist/openpgp';
-// const randomFunction = () => {
 
- const encrypter=async(message)=>{
+const encrypter=async(message)=>{
     const mes=await createMessage({text: message});
     const publicKeyArmored =`-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: Keybase OpenPGP v1.0.0

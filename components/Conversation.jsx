@@ -15,11 +15,14 @@ const Conversation = ({usr,Mes,rusername}) => {
     try {
       const encryptedMessage = await encrypt(sendmsg);
       console.log(encryptedMessage)
+      const a=await decryptMessage(encryptedMessage)
+      console.log(a)
       const ip = await getIPAddress();
+
 
       const response = await axios.post(`${ip}/messages/send/`, {
         sender_username: usr,
-        msg: sendmsg, // Send the encrypted message
+        msg: encryptedMessage, // Send the encrypted message
         recipient_username: rusername,
       });
 
