@@ -27,6 +27,7 @@ async function fn() {
         userIDs: [{ name: name, email: email }],
         type:'ecc',
         curve: 'curve25519',
+        passphrase:passphrase,
       });
       
       setPgpKey(keyPair);
