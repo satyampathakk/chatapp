@@ -17,17 +17,17 @@ const Dm = () => {
   const [messages, setMessages] = useState([]);
   const [edit,setEdit]=useState(true)
   const [currentUser, setCurrentUser] = useState('');
-  const [keys,setkey] = useState([]);
+  const [recipientKeys,setkey] = useState(null);
   const [mescount,setmesCount]=useState(false)
   const [ruser, setRuser] = useState('');
   const isFocused = useIsFocused();
   const messageLoad = async () => {
     try {
       const ip=await getIPAddress()
-
       const user = await getUsername(); 
       setCurrentUser(user);
-      const res = await axios.get(`${ip}/messages/${currentUser}/${ruser}`);
+      // console.log(`${ip}/messages/${user}/${ruser}`)
+      const res = await axios.get(`${ip}/messages/${user}/${ruser}`);
       const response = await res.data;
       setMessages(await response);
       setmesCount(false)

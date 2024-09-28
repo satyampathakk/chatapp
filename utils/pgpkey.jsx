@@ -10,11 +10,12 @@ export const savekeys= async (pk,ppk) => {
     }
   };
 
-export const privateKey= async () => {
+export const getprivatekey= async () => {
 try {
 
     const ppk = await AsyncStorage.getItem('privatekey');
-    if (pk !== null) {
+    console.log("private key retrieved")
+    if (ppk !== null) {
         return ppk;
       }
 }catch(error){
@@ -26,7 +27,7 @@ export const publicKey= async () => {
   try {
       const pk = await AsyncStorage.getItem('publickey');
       if (pk !== null) {
-        console.log("key retrieved")
+        console.log("public key retrieved")
           return pk; 
         }
   }catch(error){

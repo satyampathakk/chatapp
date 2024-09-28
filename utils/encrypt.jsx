@@ -5,64 +5,9 @@ global.TextDecoder = TextDecoder;
 import 'react-native-get-random-values';
 import { createMessage ,readKey ,encrypt} from 'openpgp/dist/openpgp';
 
-const encrypter=async(message)=>{
+const encrypter=async(message,recipient_pubkey)=>{
     const mes=await createMessage({text: message});
-    const publicKeyArmored =`-----BEGIN PGP PUBLIC KEY BLOCK-----
-Version: Keybase OpenPGP v1.0.0
-Comment: https://keybase.io/crypto
-
-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
-=mCGv
------END PGP PUBLIC KEY BLOCK-----`;
-    const pubKey=await readKey({armoredKey: publicKeyArmored});
+    const pubKey=await readKey({armoredKey: recipient_pubkey});
     const encMes=await encrypt({message: mes, encryptionKeys : [pubKey]});
     return encMes;
 }

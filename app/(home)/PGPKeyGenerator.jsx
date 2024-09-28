@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, Button, ScrollView, TextInput, StyleSheet } from 'react-native';
-import * as openpgp from 'react-native-openpgp';
+// import * as openpgp from 'react-native-openpgp';
+import { generateKey } from 'openpgp/dist/openpgp';
 import { savekeys } from '../../utils/pgpkey';
 
 const PGPKeyGenerator = () => {
   const [pgpKey, setPgpKey] = useState(null);
   const [passphrase, setPassphrase] = useState('');
-  const [statusMessage, setStatusMessage] = useState(''); // New state for verbose feedback
+  const [statusMessage, setStatusMessage] = useState('');
 
   // Function to generate random name and email
   const generateRandomNameAndEmail = () => {
@@ -14,19 +15,22 @@ const PGPKeyGenerator = () => {
     const randomEmail = `${randomName}@example.com`;
     return { name: randomName, email: randomEmail };
   };
-
+async function fn() {
+  setStatusMessage('Generating PGP keys, please wait...');
+}
   // Function to generate the PGP key
   const handleGenerateKey = async () => {
     const { name, email } = generateRandomNameAndEmail();
-    setStatusMessage('Generating PGP keys, please wait...'); // Update status to show progress
+    await fn();
     try {
-      const keyPair = await openpgp.generateKey({
-        userIds: [{ name: name, email: email }],
-        numBits: 1024 , 
-
+      const keyPair = await generateKey({
+        userIDs: [{ name: name, email: email }],
+        type:'ecc',
+        curve: 'curve25519',
       });
+      
       setPgpKey(keyPair);
-      savekeys(keyPair.publicKeyArmored,keyPair.privateKeyArmored)
+      savekeys(keyPair.publicKey,keyPair.privateKey)
 
       
       setStatusMessage('PGP keys generated successfully.');
@@ -52,9 +56,9 @@ const PGPKeyGenerator = () => {
       {pgpKey && (
         <ScrollView style={styles.scrollView}>
           <Text style={styles.keyLabel}>Public Key:</Text>
-          <Text selectable style={styles.keyText}>{pgpKey.publicKeyArmored}</Text>
+          <Text selectable style={styles.keyText}>{pgpKey.publicKey}</Text>
           <Text style={styles.keyLabel}>Private Key:</Text>
-          <Text selectable style={styles.keyText}>{pgpKey.privateKeyArmored}</Text>
+          <Text selectable style={styles.keyText}>{pgpKey.privateKey}</Text>
         </ScrollView>
       )}
     </View>

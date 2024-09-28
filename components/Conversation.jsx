@@ -4,17 +4,14 @@ import axios from 'axios'
 import { getIPAddress } from './IpStorage'
 import encrypt from '../utils/encrypt'
 import  decryptMessage  from '../utils/decrypt'
+import { publicKey } from '../utils/pgpkey'
 const Conversation = ({usr,Mes,rusername}) => {
   const [sendmsg,setSendmsg]=useState('')
-  const [encryptedMes,setEncryptedMes]=useState('')
-  const handleEncrypt=async(mes)=>{
-    setEncryptedMes(mes);
-  }
 
   const  sendfunc = async () => {
     try {
-      const encryptedMessage = await encrypt(sendmsg);
-      console.log(encryptedMessage)
+      const pub=await publicKey()
+      const encryptedMessage = await encrypt(sendmsg,pub);
       const a=await decryptMessage(encryptedMessage)
       console.log(a)
       const ip = await getIPAddress();
@@ -26,8 +23,8 @@ const Conversation = ({usr,Mes,rusername}) => {
         recipient_username: rusername,
       });
 
-      setSendmsg(''); // Clear the input field
-      Mes(); // Refresh the message list
+      setSendmsg(''); 
+      Mes(); 
     } catch (error) {
       console.error('Error sending message:', error);
       // Handle the error and display a message to the user
