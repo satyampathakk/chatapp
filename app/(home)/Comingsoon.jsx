@@ -9,6 +9,9 @@ import axios from 'axios';
 import { clearUsername } from '../../components/Storage';
 import { getIPAddress } from '../../components/IpStorage';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import testProxy from '../../utils/testproxy';
+import checkTorConnection from '../../utils/testOnion';
+import fn from '../../utils/torUtils';
 const Comingsoon = () => {
 // const isFocused = useIsFocused();
 // const usageLoaders= ()=>{
@@ -52,6 +55,27 @@ const Comingsoon = () => {
    <Text className=" text-teal-400">Click Here to log Out! </Text> 
   </TouchableOpacity>
   </View>
+  <TouchableOpacity className = "bottom-10 items-center border-red-500 border-4" 
+  onPress={() =>{ 
+    const test=async()=>{
+      await testProxy()
+      // await checkTorConnection()
+    }
+test()
+  }}
+  >
+    <Text className="text-teal-400">Click Here to test proxy!kjdf   </Text>
+  </TouchableOpacity>
+  <TouchableOpacity className = "bottom-10 items-center border-red-500 border-4" 
+  onPress={() =>{ 
+    const test=async()=>{
+      await fn()
+    }
+test()
+  }}
+  >
+    <Text className="text-teal-400">Click Here to test proxy!</Text>
+  </TouchableOpacity>
     </View>
     </LinearGradient>
     </SafeAreaView>

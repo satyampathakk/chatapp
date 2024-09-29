@@ -1,16 +1,16 @@
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 const checkTorConnection = async () => {
-    const url = 'https://check.torproject.org/';
+    const url = 'http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/Satyam/shivam/';
     const headers = {
         'Accept': 'application/json',
     };
-
     // Configure the proxy
     const proxy = {
         host: '127.0.0.1',
         port: 9050, // Default Tor SOCKS5 proxy port
-        protocol: 'socks5',
+        protocol: "socks"
     };
 
     try {
@@ -22,16 +22,17 @@ const checkTorConnection = async () => {
                 protocol: proxy.protocol,
             },
         });
-        const data = response.data;
-        if (data.IsTor) {
-            console.log('Connected to Tor network');
-        } else {
-            console.log('Not connected to Tor network');
-        }
-        return data;
+        const data = JSON.parse(response.data);
+        Alert.alert("response by testonion",SON.stringify(data))
+
+        // if (data.IsTor) {
+        //     Alert.alert('Connected to Tor network');
+        // } else {
+        //     Alert.alert('Not connected to Tor network');
+        // }
     } catch (error) {
-        console.error('Error checking Tor connection:', error);
-        throw error;
+        let val= JSON.stringify(error)
+        Alert.alert("you are facing error here",val)
     }
 };
 

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { Alert } from "react-native";
 const testProxy = async () => {
-    ORBOT_HTTP_PROXY='http://127.0.0.1:8118'
+    ORBOT_HTTP_PROXY='socks5h://localhost:9150'
     const proxyAxios = axios.create({
         baseURL: ORBOT_HTTP_PROXY,
         headers: {
@@ -8,10 +9,11 @@ const testProxy = async () => {
         },
     });
     try {
-        const res = await proxyAxios.get('https://httpbin.org/get');
-        console.log("Proxy Test Response:", res.data);
+        const res = await proxyAxios.get('https://check.torproject.org/');
+
+        Alert.alert("response by testonion",JSON.stringify(res))
     } catch (error) {
-        console.error("Error testing proxy:", error);
+        Alert.alert("Error testing proxy:" ,error.status);
     }
 };
 export default testProxy
