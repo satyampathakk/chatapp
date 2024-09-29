@@ -6,9 +6,10 @@
     "scheme":"chatter",
     "android": {
       "permissions": [
-        "INTERNET",
-        "SYSTEM_ALERT_WINDOW",
-        "VIBRATE"
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "INTERNET"
       ],
       "package": "com.satyampathakk.yourappslug"
     },

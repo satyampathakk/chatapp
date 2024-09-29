@@ -12,8 +12,8 @@ const Conversation = ({usr,Mes,rusername}) => {
     try {
       const pub=await publicKey()
       const encryptedMessage = await encrypt(sendmsg,pub);
-      const a=await decryptMessage(encryptedMessage)
-      console.log(a)
+      // const a=await decryptMessage(encryptedMessage)
+      // console.log(a)
       const ip = await getIPAddress();
 
 

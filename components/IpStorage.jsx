@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUsername } from './Storage';
 import { router } from 'expo-router';
 import axios from 'axios';
-// let DEFAULT_IP_ADDRESS = 'http://16.171.206.219:80';
+let DEFAULT_IP_ADDRESS = 'http://16.171.206.219:80';
 const ORBOT_HTTP_PROXY = 'http://127.0.0.1:8118'; 
 const onionAddress = 'http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion';
 export const saveIPAddress = async (ipAddress) => {
@@ -19,7 +19,7 @@ export const saveIPAddress = async (ipAddress) => {
 export const getIPAddress = async () => {
   try {
     let ipAddress = await AsyncStorage.getItem('ipAddress');
-    ipAddress=ipAddress?ipAddress:onionAddress
+    ipAddress=ipAddress?ipAddress:DEFAULT_IP_ADDRESS
     const usr = await getUsername();
     const res=await axios.post(`${ipAddress}/users`,{username:usr})
     console.log(res)
@@ -35,7 +35,7 @@ export const getIPAddress = async () => {
       console.error('Network error or request could not be made:', error.message);
     }
 
-    return onionAddress;
+    return DEFAULT_IP_ADDRESS;
   }
 };
 
