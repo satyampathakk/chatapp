@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Alert } from 'react-native';
 
 const checkTorConnection = async () => {
-    const url = 'http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/Satyam/shivam/';
+    const url = 'http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/Satyam/shivahm/';
     const headers = {
         'Accept': 'application/json',
     };

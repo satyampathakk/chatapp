@@ -30,7 +30,7 @@ export default function index() {
   <ScrollView contentContainerStyle={{height:'100%'}}>
     <View className=" h-screen w-full  ">
       <ImageBackground source={a}  className="w-full h-full  ">
-        <View className="absolute bottom-4 " >
+        <View className="absolute bottom-8 " >
 
         <CustomButton ></CustomButton>
       </View>

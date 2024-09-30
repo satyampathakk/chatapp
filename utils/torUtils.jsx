@@ -1,21 +1,38 @@
-import { Alert } from 'react-native';
-import axios from 'axios';
-import NetworkProxy from 'react-native-network-proxy'
+import Tor from 'react-native-tor'
+import { useRef } from 'react'
 
-const fn = async () => {
+const MyTorService=async()=>{
+  const tor = useRef(Tor({numberConcurrentRequests:0,startDaemonOnActive:true,}))
+  return tor.current
+}
 
-const proxy = 'socks5h://127.0.0.1:9150';
 
-const ownaxios=await NetworkProxy
-
-// Send the request through Tor
-axios.get('http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/messages/Satyam/shivam', { httpAgent: agent, httpsAgent: agent })
-  .then(response => {
-    console.log(response.data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
-};
-
-export default fn;
+export const TorGet =async (url='http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/Satyam/shivahm/')=>{
+  try{
+  const getReq=await MyTorService()
+  const response =await getReq.get(url)
+  return response
+  }catch(error){
+    console.error(error)
+  }
+  
+}
+export const TorPost= async(url,body)=>{
+  try{
+    const postReq=await MyTorService()
+    const response =postReq.post(url,body)
+    console.log(response)
+  }catch{
+    console.error(error)
+  }
+}
+export const TorDelete= async ()=>{
+  try{
+    const deleteReq=await MyTorService()
+    const response =deleteReq.delete(url,body)
+    console.log(response)
+  }catch(error)
+  {
+    console.error(error)
+  }
+}

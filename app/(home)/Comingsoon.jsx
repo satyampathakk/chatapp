@@ -11,7 +11,8 @@ import { getIPAddress } from '../../components/IpStorage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import testProxy from '../../utils/testproxy';
 import checkTorConnection from '../../utils/testOnion';
-import fn from '../../utils/torUtils';
+import torservice,{torGet} from '../../utils/torUtils';
+
 const Comingsoon = () => {
 // const isFocused = useIsFocused();
 // const usageLoaders= ()=>{
@@ -69,7 +70,8 @@ test()
   <TouchableOpacity className = "bottom-10 items-center border-red-500 border-4" 
   onPress={() =>{ 
     const test=async()=>{
-      await fn()
+      await  torGet('kflgjd')
+
     }
 test()
   }}
