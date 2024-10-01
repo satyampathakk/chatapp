@@ -1,38 +1,47 @@
-import Tor from 'react-native-tor'
-import { useRef } from 'react'
+import { Alert } from 'react-native';
+import Tor from 'react-native-tor';
 
-const MyTorService=async()=>{
-  const tor = useRef(Tor({numberConcurrentRequests:0,startDaemonOnActive:true,}))
-  return tor.current
-}
+let torInstance = null;
 
+const torUtils = () => {
+  if (!torInstance) {
+    torInstance = Tor({ numberConcurrentRequests: 5, startDaemonOnActive: true });
+  }
 
-export const TorGet =async (url='http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/Satyam/shivahm/')=>{
-  try{
-  const getReq=await MyTorService()
-  const response =await getReq.get(url)
-  return response
-  }catch(error){
-    console.error(error)
-  }
-  
-}
-export const TorPost= async(url,body)=>{
-  try{
-    const postReq=await MyTorService()
-    const response =postReq.post(url,body)
-    console.log(response)
-  }catch{
-    console.error(error)
-  }
-}
-export const TorDelete= async ()=>{
-  try{
-    const deleteReq=await MyTorService()
-    const response =deleteReq.delete(url,body)
-    console.log(response)
-  }catch(error)
-  {
-    console.error(error)
-  }
-}
+  const TorGet = async (url) => {
+    try {
+      let response = await torInstance.get(url);
+      // let res=atob(response.b64Data)
+
+       return response.json
+      // console.log('TorGet Response', JSON.stringify(response)); // Display response in Alert
+    } catch (error) {
+      Alert.alert('Error in TorGet:', error.message || error.toString());
+      throw error;
+    }
+  };
+
+  const TorPost = async (url, body) => {
+    try {
+      const response = await torInstance.post(url, JSON.stringify(body));
+      // Alert.alert('TorPost Response', JSON.stringify(response)); // Display response in Alert
+    } catch (error) {
+      Alert.alert('Error in TorPost:', error.message || error.toString());
+      throw error;
+    }
+  };
+
+  const TorDelete = async (url) => {
+    try {
+      const response = await torInstance.delete(url);
+      Alert.alert('TorDelete Response', JSON.stringify(response)); // Display response in Alert
+    } catch (error) {
+      Alert.alert('Error in TorDelete:', error.message || error.toString());
+      throw error;
+    }
+  };
+
+  return { TorGet, TorPost, TorDelete };
+};
+
+export default torUtils;

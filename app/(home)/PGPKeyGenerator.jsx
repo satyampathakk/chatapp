@@ -3,12 +3,16 @@ import { View, Text, Button, ScrollView, TextInput, StyleSheet } from 'react-nat
 // import * as openpgp from 'react-native-openpgp';
 import { generateKey } from 'openpgp/dist/openpgp';
 import { savekeys } from '../../utils/pgpkey';
+import { saveRecipientPub } from '../../utils/savepubkey';
+import { setUpub } from '../../utils/pubkeysetter';
+import { getUsername } from '../../components/Storage';
 
 const PGPKeyGenerator = () => {
   const [pgpKey, setPgpKey] = useState(null);
   const [passphrase, setPassphrase] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
-
+  const [username, setUsername] = useState(''); 
+ 
   // Function to generate random name and email
   const generateRandomNameAndEmail = () => {
     const randomName = `User${Math.floor(Math.random() * 10000)}`;
@@ -22,6 +26,8 @@ async function fn() {
   const handleGenerateKey = async () => {
     const { name, email } = generateRandomNameAndEmail();
     await fn();
+    const user=await getUsername()
+    setUsername(user)
     try {
       const keyPair = await generateKey({
         userIDs: [{ name: name, email: email }],
@@ -29,11 +35,10 @@ async function fn() {
         curve: 'curve25519',
         passphrase:passphrase,
       });
-      
+      console.log(username)
+      await savekeys(keyPair.publicKey,keyPair.privateKey)
+      await setUpub(username,keyPair.publicKey)
       setPgpKey(keyPair);
-      savekeys(keyPair.publicKey,keyPair.privateKey)
-
-      
       setStatusMessage('PGP keys generated successfully.');
     } catch (error) {
       console.error('Error generating PGP key:', error);

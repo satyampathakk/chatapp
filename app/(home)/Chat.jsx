@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient'; 
 import { Link } from "expo-router";
@@ -53,6 +53,18 @@ const Chat = () => {
         end={{ x: 1, y: 0 }}
         className="w-full h-20 blur-3xl"
       >
+      <View className="justify-center items-center ">
+        <Text className="text-2xl text-white italic">
+          Enter Passphrase remember it is State variable exiting will remove it from the memory... Providing you the Extreme Security !!! 
+        </Text>
+        <TextInput
+        className="w-3/4 h-10 rounded-lg text-gray-400 text-center"
+        placeholder="Enter Passphrase"
+        secureTextEntry={true}
+        onChange={(newtext)=>console.log("ehlhl")}
+        >
+        </TextInput>
+      </View>
       <View className="justify-center items-center ">
         <Text className="text-2xl text-white italic">
           Welcome to my chat app..!!!

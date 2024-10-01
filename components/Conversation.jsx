@@ -5,19 +5,20 @@ import { getIPAddress } from './IpStorage'
 import encrypt from '../utils/encrypt'
 import  decryptMessage  from '../utils/decrypt'
 import { publicKey } from '../utils/pgpkey'
-const Conversation = ({usr,Mes,rusername}) => {
+import torUtils from '../utils/torUtils'
+const Conversation = ({usr,Mes,rusername,rkeys}) => {
+ 
   const [sendmsg,setSendmsg]=useState('')
-
+  const {TorPost}=torUtils()
   const  sendfunc = async () => {
     try {
-      const pub=await publicKey()
-      const encryptedMessage = await encrypt(sendmsg,pub);
+      const ip = await getIPAddress();
+      // const pub=await TorGet(`${ip}/users/details`)
+      const encryptedMessage = await encrypt(sendmsg,rkeys);
       // const a=await decryptMessage(encryptedMessage)
       // console.log(a)
-      const ip = await getIPAddress();
-
-
-      const response = await axios.post(`${ip}/messages/send/`, {
+      
+      const response = await TorPost(`${ip}/messages/send/`, {
         sender_username: usr,
         msg: encryptedMessage, // Send the encrypted message
         recipient_username: rusername,

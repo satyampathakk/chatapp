@@ -9,11 +9,12 @@ import axios from 'axios';
 import { clearUsername } from '../../components/Storage';
 import { getIPAddress } from '../../components/IpStorage';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import testProxy from '../../utils/testproxy';
-import checkTorConnection from '../../utils/testOnion';
-import torservice,{torGet} from '../../utils/torUtils';
+import torUtils from '../../utils/torUtils';
 
+// import MyTorService from '../../utils/torUtils';
+let url ='http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion/messages/Satyam/shivam'
 const Comingsoon = () => {
+  const {TorGet}=torUtils()
 // const isFocused = useIsFocused();
 // const usageLoaders= ()=>{
 //   const asyncLoader=async () =>{
@@ -59,8 +60,7 @@ const Comingsoon = () => {
   <TouchableOpacity className = "bottom-10 items-center border-red-500 border-4" 
   onPress={() =>{ 
     const test=async()=>{
-      await testProxy()
-      // await checkTorConnection()
+      await TorGet(url)
     }
 test()
   }}
@@ -70,7 +70,7 @@ test()
   <TouchableOpacity className = "bottom-10 items-center border-red-500 border-4" 
   onPress={() =>{ 
     const test=async()=>{
-      await  torGet('kflgjd')
+      console.log('hei')
 
     }
 test()

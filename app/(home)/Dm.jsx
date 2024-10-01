@@ -12,6 +12,8 @@ import { getIPAddress } from '../../components/IpStorage';
 import { publicKey } from '../../utils/pgpkey';
 import Conversation from '../../components/Conversation';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import torUtils from '../../utils/torUtils';
+import { recipientPublicGetter} from '../../utils/savepubkey';
 
 const Dm = () => {
   const [messages, setMessages] = useState([]);
@@ -23,13 +25,13 @@ const Dm = () => {
   const isFocused = useIsFocused();
   const messageLoad = async () => {
     try {
+      const {TorGet}=torUtils()
       const ip=await getIPAddress()
       const user = await getUsername(); 
       setCurrentUser(user);
       // console.log(`${ip}/messages/${user}/${ruser}`)
-      const res = await axios.get(`${ip}/messages/${user}/${ruser}`);
-      const response = await res.data;
-      setMessages(await response);
+      const res = await TorGet(`${ip}/messages/${user}/${ruser}`);
+      setMessages(res);
       setmesCount(false)
     } catch (error) {
       if(error.response.status===404){
@@ -90,7 +92,12 @@ const Dm = () => {
               if(edit)
                 {
                   setEdit(false)
-                  handleRecieve()
+                  const fn=async()=>{
+                  await handleRecieve()
+                  let rk=await recipientPublicGetter(ruser)
+                  setkey(rk)
+                  }
+                  fn()
             }
             else{
               setEdit(true)
@@ -116,7 +123,7 @@ const Dm = () => {
         </ScrollView>
 
         <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }} >
-          <Conversation usr={currentUser} Mes={messageLoad} rusername={ruser} />
+          <Conversation rkeys={recipientKeys} usr={currentUser} Mes={messageLoad} rusername={ruser} />
         </View>
       </View>
     </LinearGradient>

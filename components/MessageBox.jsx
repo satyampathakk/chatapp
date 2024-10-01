@@ -3,17 +3,7 @@ import { getUsername } from './Storage';
 import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const MessageBox = ({ id, msg, usr, tmp }) => {
-  const [username, setUser] = useState('');
-
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await getUsername();
-      setUser(user);
-    };
-    getUser();
-  }, []);
-
+const MessageBox = ({  msg, usr, tmp }) => {
   return (
     <View className="border-2 rounded-xl w-3/5 border-pink-600 p-2 m-2 ">
       <LinearGradient
