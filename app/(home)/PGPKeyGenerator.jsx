@@ -3,7 +3,6 @@ import { View, Text, Button, ScrollView, TextInput, StyleSheet } from 'react-nat
 // import * as openpgp from 'react-native-openpgp';
 import { generateKey } from 'openpgp/dist/openpgp';
 import { savekeys } from '../../utils/pgpkey';
-import { saveRecipientPub } from '../../utils/savepubkey';
 import { setUpub } from '../../utils/pubkeysetter';
 import { getUsername } from '../../components/Storage';
 
@@ -35,9 +34,8 @@ async function fn() {
         curve: 'curve25519',
         passphrase:passphrase,
       });
-      console.log(username)
       await savekeys(keyPair.publicKey,keyPair.privateKey)
-      await setUpub(username,keyPair.publicKey)
+      await setUpub(user,keyPair.publicKey)
       setPgpKey(keyPair);
       setStatusMessage('PGP keys generated successfully.');
     } catch (error) {

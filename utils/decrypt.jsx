@@ -1,14 +1,15 @@
 import * as openpgp from 'openpgp/dist/openpgp'
 import { getprivatekey } from './pgpkey';
+import { getPassphrase } from './passphrase';
 const decrypt=async(mes)=>{
 const privateKeyArmored=await getprivatekey()
 const decmes= await openpgp.readMessage({armoredMessage: mes});
-let passphrase="Helllo";
+let passphrase=await getPassphrase()
 const priKey = await openpgp.decryptKey({
     privateKey : await openpgp.readPrivateKey({ armoredKey: privateKeyArmored }),
-    passphrase
+    passphrase 
   });
     const encMes=await openpgp.decrypt({ message: decmes, decryptionKeys : priKey});
-    console.log(encMes);
+    return encMes
 }
 export default decrypt

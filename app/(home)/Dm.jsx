@@ -1,42 +1,53 @@
 import { StyleSheet, Text, View, ScrollView ,TextInput, TouchableOpacity} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import axios from "axios";
 import { useIsFocused } from '@react-navigation/native';
 import MessageBox from "../../components/MessageBox";
-import SendBox from '../../components/SendBox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getUsername } from '../../components/Storage';  
-import LoadingSprinner from '../../components/LoadingSpinner';
 import { getIPAddress } from '../../components/IpStorage';
 import Conversation from '../../components/Conversation';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import torUtils from '../../utils/torUtils';
 import { recipientPublicGetter} from '../../utils/savepubkey';
+import { decrypt } from 'openpgp';
 
 const Dm = () => {
   const [messages, setMessages] = useState([]);
   const [edit,setEdit]=useState(true)
   const [currentUser, setCurrentUser] = useState('');
   const [recipientKeys,setkey] = useState(null);
-  const [mescount,setmesCount]=useState(false)
   const [ruser, setRuser] = useState('');
+  const [ip,setIp]=useState
   const isFocused = useIsFocused();
+  useEffect(()=>{
+    const Loader = async () => {
+      const ip=await getIPAddress()
+      const user = await getUsername(); 
+      setIp(ip)
+      setCurrentUser(user);
+    }
+Loader()
+  },[])
+
   const messageLoad = async () => {
     try {
       const {TorGet}=torUtils()
-      const ip=await getIPAddress()
-      const user = await getUsername(); 
-      setCurrentUser(user);
+      setCurrentUser(currentUser);
       // console.log(`${ip}/messages/${user}/${ruser}`)
-      const res = await TorGet(`${ip}/messages/${user}/${ruser}`);
-      setMessages(res);
-      setmesCount(false)
+      const res = await TorGet(`${ip}/messages/${currentUser}/${ruser}`);
+      const decryptedMessages = await Promise.all(
+        res.map(async ({ msg, sender_username, recipient_username }) => {
+          const decryptedMsg = await decrypt(msg);
+          return {
+            msg: decryptedMsg, 
+            sender_username,
+            recipient_username
+          };
+        })
+      );
+      setMessages(decryptedMessages);
     } catch (error) {
-      if(error.response.status===404){
-        setmesCount(false)
-        return
-      }
       console.error(error);
     }
   };

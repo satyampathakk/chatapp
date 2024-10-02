@@ -8,12 +8,15 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import { clearUsername } from '../../components/Storage';
 import { getIPAddress } from '../../components/IpStorage';
 import torUtils from '../../utils/torUtils';
+import { clearPassphrase, savePassphrase } from '../../utils/passphrase';
 
 const Comingsoon = () => {
   const { TorGet } = torUtils();
   const isFocused = useIsFocused();
+  const [edit,setEdit]=useState(true)
   const [sysusage, setSysusage] = useState({});
   const [isLoaded, setIsloaded] = useState(true);
+  const [pass,setP]=useState('')
   
   const fetchSystemUsage = async () => {
     try {
@@ -60,6 +63,29 @@ const Comingsoon = () => {
           <View className="-bottom-10 items-center border-red-400 border-2">
             <TouchableOpacity onPress={clearUsername}>
               <Text className="text-teal-400">Click Here to log Out!</Text> 
+            </TouchableOpacity>
+          </View>
+          <View className="h-10 bg-slate-600 z-10 flex-row items-center">
+            <TextInput 
+              value='passphrase'
+              editable={edit}
+              className="flex-1 text-white text-center text-lg" 
+              placeholder="Type your message..."
+              onChangeText={(newtext)=>setP(newtext)}
+            /> 
+          <TouchableOpacity className="w-10" onPress={async () => {
+             if (edit) {
+                  setEdit(false);
+                  await savePassphrase(pass); 
+                  } else {
+                        setEdit(true);
+                        await clearPassphrase(); 
+                        }
+                        }}>
+            { edit ?<FontAwesome size={28} name="lock"  />
+            :
+            <FontAwesome size={28} name="unlock"  />
+          }
             </TouchableOpacity>
           </View>
         </View>

@@ -16,8 +16,9 @@ const torUtils = () => {
        return response.json
       // console.log('TorGet Response', JSON.stringify(response)); // Display response in Alert
     } catch (error) {
-      console.log(torInstance.getDaemonStatus())
+      
       Alert.alert('Error in TorGet:', error.message || error.toString());
+      Alert.alert(JSON.stringify(torInstance.getDaemonStatus()))
       throw error;
     }
   };
@@ -44,14 +45,9 @@ const torUtils = () => {
     }
   };
 
-  const stopTor = () => {
-    if (torInstance) {
-      torInstance.stop();
-    }
-  };
 
 
-  return { TorGet, TorPost, TorDelete ,stopTor};
+  return { TorGet, TorPost, TorDelete};
 };
 
 export default torUtils;
