@@ -9,7 +9,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { getUsername } from '../../components/Storage';  
 import LoadingSprinner from '../../components/LoadingSpinner';
 import { getIPAddress } from '../../components/IpStorage';
-import { publicKey } from '../../utils/pgpkey';
 import Conversation from '../../components/Conversation';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import torUtils from '../../utils/torUtils';
@@ -71,8 +70,7 @@ const Dm = () => {
   //   return () => clearInterval(intervalId);
   // }, [setMessages]);
 
-  return ( mescount?<Text> There is no conversation between you send hi!</Text>
-    :
+  return (
     <SafeAreaView>
     <LinearGradient 
       colors={['purple', 'black']}  

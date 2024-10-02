@@ -7,7 +7,7 @@ export const setUpub=async (user,ukey)=>{
     const response =await TorPost(`${ip}/details/${user}`,{     
         public_key:ukey
     })
-    console.log(response)
+    console.log("key sent to server",response)
 }catch(error){
     console.log(error)
 }

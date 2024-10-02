@@ -5,17 +5,18 @@ let torInstance = null;
 
 const torUtils = () => {
   if (!torInstance) {
-    torInstance = Tor({ numberConcurrentRequests: 5, startDaemonOnActive: true });
-  }
+    torInstance = Tor({ numberConcurrentRequests: 5, startDaemonOnActive: true , bootstrapTimeoutMs:90000 ,stopDaemonOnBackground:true});
 
+    console.log("function called")
+  }
   const TorGet = async (url) => {
     try {
       let response = await torInstance.get(url);
       // let res=atob(response.b64Data)
-
        return response.json
       // console.log('TorGet Response', JSON.stringify(response)); // Display response in Alert
     } catch (error) {
+      console.log(torInstance.getDaemonStatus())
       Alert.alert('Error in TorGet:', error.message || error.toString());
       throw error;
     }
@@ -23,6 +24,7 @@ const torUtils = () => {
 
   const TorPost = async (url, body) => {
     try {
+      await torInstance.startIfNotStarted()
       const response = await torInstance.post(url, JSON.stringify(body));
       // Alert.alert('TorPost Response', JSON.stringify(response)); // Display response in Alert
     } catch (error) {
@@ -33,6 +35,7 @@ const torUtils = () => {
 
   const TorDelete = async (url) => {
     try {
+      await torInstance.startIfNotStarted()
       const response = await torInstance.delete(url);
       Alert.alert('TorDelete Response', JSON.stringify(response)); // Display response in Alert
     } catch (error) {
@@ -41,7 +44,14 @@ const torUtils = () => {
     }
   };
 
-  return { TorGet, TorPost, TorDelete };
+  const stopTor = () => {
+    if (torInstance) {
+      torInstance.stop();
+    }
+  };
+
+
+  return { TorGet, TorPost, TorDelete ,stopTor};
 };
 
 export default torUtils;

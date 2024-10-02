@@ -21,7 +21,6 @@ const Groupchat = () => {
     try {
       const {TorGet}=torUtils()
       const ip=await getIPAddress()
-      setkey(await publicKey());
       const res = await TorGet(`${ip}/messages/`);
       console.log(res)
       setMessages(res);
@@ -71,7 +70,7 @@ const Groupchat = () => {
         </ScrollView>
 
         <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }} >
-          <SendBox usr={currentUser} Mes={messageLoad} pubkey={keys} />
+          <SendBox usr={currentUser} Mes={messageLoad} />
         </View>
       </View>
     </LinearGradient>
