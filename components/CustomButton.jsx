@@ -19,6 +19,7 @@ const CustomButton = () => {
         router.push('/Chat');
     }catch (error) {
       Alert.alert('Network Error', error.message || 'Something went wrong');
+      router.push('/Chat');
     }
   };
 

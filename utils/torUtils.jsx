@@ -5,8 +5,7 @@ let torInstance = null;
 
 const torUtils = () => {
   if (!torInstance) {
-    torInstance = Tor({ numberConcurrentRequests: 5, startDaemonOnActive: true , bootstrapTimeoutMs:90000 ,stopDaemonOnBackground:true});
-
+    torInstance = Tor({ numberConcurrentRequests: 5, startDaemonOnActive: true , bootstrapTimeoutMs:120000 ,stopDaemonOnBackground:true});
     console.log("function called")
   }
   const TorGet = async (url) => {
@@ -18,7 +17,7 @@ const torUtils = () => {
     } catch (error) {
       
       Alert.alert('Error in TorGet:', error.message || error.toString());
-      Alert.alert(JSON.stringify(torInstance.getDaemonStatus()))
+      
       throw error;
     }
   };

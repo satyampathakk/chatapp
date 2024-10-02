@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity,TextInput } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,7 +23,7 @@ const Comingsoon = () => {
     try {
       const ip = await getIPAddress();
       const response = await TorGet(`${ip}/system-usage`);
-      const data = response.data;
+      const data = response;
       setSysusage(data);
     } catch (error) {
       console.error("Error fetching system usage:", error);
@@ -60,9 +61,9 @@ const Comingsoon = () => {
             />
           )}
 
-          <View className="-bottom-10 items-center border-red-400 border-2">
+          <View className="-bottom-2/4 items-center border-red-400 border-2">
             <TouchableOpacity onPress={clearUsername}>
-              <Text className="text-teal-400">Click Here to log Out!</Text> 
+              <Text className="text-teal-400">Click Here to log Out!   </Text> 
             </TouchableOpacity>
           </View>
           <View className="h-10 bg-slate-600 z-10 flex-row items-center">

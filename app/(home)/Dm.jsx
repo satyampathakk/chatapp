@@ -14,44 +14,37 @@ import { decrypt } from 'openpgp';
 
 const Dm = () => {
   const [messages, setMessages] = useState([]);
-  const [edit,setEdit]=useState(true)
+  const [edit, setEdit] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
-  const [recipientKeys,setkey] = useState(null);
+  const [recipientKeys, setKey] = useState(null);
   const [ruser, setRuser] = useState('');
-  const [ip,setIp]=useState
+  const [ip, setIp] = useState(null);
   const isFocused = useIsFocused();
-  useEffect(()=>{
+
+  useEffect(() => {
     const Loader = async () => {
-      const ip=await getIPAddress()
+      const ip = await getIPAddress();
       const user = await getUsername(); 
-      setIp(ip)
+      setIp(ip);
       setCurrentUser(user);
-    }
-Loader()
-  },[])
+    };
+    Loader();
+  }, []);
 
   const messageLoad = async () => {
     try {
-      const {TorGet}=torUtils()
-      setCurrentUser(currentUser);
-      // console.log(`${ip}/messages/${user}/${ruser}`)
+      const { TorGet } = torUtils();  // Ensure torUtils returns an object with TorGet
+      if (!ip || !currentUser || !ruser) return; // Add a check to avoid making invalid requests
+
       const res = await TorGet(`${ip}/messages/${currentUser}/${ruser}`);
-      const decryptedMessages = await Promise.all(
-        res.map(async ({ msg, sender_username, recipient_username }) => {
-          const decryptedMsg = await decrypt(msg);
-          return {
-            msg: decryptedMsg, 
-            sender_username,
-            recipient_username
-          };
-        })
-      );
-      setMessages(decryptedMessages);
+      console.log(res); // Check if response is in expected format
+      setMessages(res);
     } catch (error) {
       console.error(error);
     }
   };
-  const handleRecieve=async()=>{
+
+  const handleRecieve = async () => {
     let intervalId;
     if (isFocused) {
       await messageLoad(); 
@@ -60,36 +53,17 @@ Loader()
       intervalId = setInterval(messageLoad, 300000);
     }
     return () => clearInterval(intervalId);
-  }
-
-
-  // useEffect(() => {
-
-  //   const loadCurrentUser = async () => {
-  //     const user = await getUsername(); 
-  //     setCurrentUser(user);
-  //   };
-  //   loadCurrentUser();
-
-  //   let intervalId;
-  //   if (isFocused) {
-  //     messageLoad(); 
-  //     intervalId = setInterval(messageLoad, 50000);
-  //   } else {
-  //     intervalId = setInterval(messageLoad, 300000);
-  //   }
-  //   return () => clearInterval(intervalId);
-  // }, [setMessages]);
+  };
 
   return (
     <SafeAreaView>
-    <LinearGradient 
-      colors={['purple', 'black']}  
-      start={{ x: 0, y: 1 }}
-      end={{ x: 1, y: 0 }}
-      className="w-full h-full flex-row justify-between ">
-      <View style={{ flex: 1 }}>
-      <View className="h-10 bg-slate-600 z-10 flex-row items-center">
+      <LinearGradient 
+        colors={['purple', 'black']}  
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 0 }}
+        className="w-full h-full flex-row justify-between">
+        <View style={{ flex: 1 }}>
+          <View className="h-10 bg-slate-600 z-10 flex-row items-center">
             <TextInput 
               value={ruser}
               editable={edit}
@@ -97,45 +71,40 @@ Loader()
               placeholder="Type your message..."
               onChangeText={setRuser}
             /> 
-            <TouchableOpacity className="w-10" onPress={()=>{
-              if(edit)
-                {
-                  setEdit(false)
-                  const fn=async()=>{
-                  await handleRecieve()
-                  let rk=await recipientPublicGetter(ruser)
-                  setkey(rk)
-                  }
-                  fn()
-            }
-            else{
-              setEdit(true)
-            }
+            <TouchableOpacity className="w-10" onPress={() => {
+              if (edit) {
+                setEdit(false);
+                const fn = async () => {
+                  await handleRecieve();
+                  let rk = await recipientPublicGetter(ruser);
+                  setKey(rk);
+                };
+                fn();
+              } else {
+                setEdit(true);
+              }
             }}>
-            { edit ?<FontAwesome size={28} name="lock"  />
-            :
-            <FontAwesome size={28} name="unlock"  />
-          }
+              { edit ? <FontAwesome size={28} name="lock" /> : <FontAwesome size={28} name="unlock" /> }
             </TouchableOpacity>
           </View>
 
-        <ScrollView contentContainerStyle={{ paddingBottom: 80, }}>
-        {messages.length > 0 ? (
-              messages.map(({ msg ,sender_username , recipient_username }) => (
+          <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+            {messages.length > 0 ? (
+              messages.map(({ msg, sender_username, recipient_username }) => (
                 <View key={Math.random()} className={`justify-center ${sender_username === currentUser ? 'items-end' : 'items-start'}`}>
                   <MessageBox key={Math.random()} msg={msg} tmp={recipient_username} usr={sender_username} />
                 </View>
               ))
             ) : (
-              <Text className="items-center text-white justify-center" >No messages available</Text>
+              <Text className="items-center text-white justify-center">No messages available</Text>
             )}
-        </ScrollView>
+          </ScrollView>
 
-        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }} >
-          <Conversation rkeys={recipientKeys} usr={currentUser} Mes={messageLoad} rusername={ruser} />
+          <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+            <Conversation rkeys={recipientKeys} usr={currentUser} Mes={messageLoad} rusername={ruser} />
+          </View>
         </View>
-      </View>
-    </LinearGradient>
+      </LinearGradient>
     </SafeAreaView>
   );
 };

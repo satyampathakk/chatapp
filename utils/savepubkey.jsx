@@ -3,7 +3,7 @@ import torUtils from "./torUtils";
 import { getIPAddress } from "../components/IpStorage";
 export const saveRecipientPub=async(user,pub)=>{
     try {
-        await AsyncStorage.setItem(`${user}`, pub);
+        await AsyncStorage.setItem(user, pub);
         console.log("saved Recipient Public key")
     }catch(error){
         console.log(error);
@@ -20,16 +20,16 @@ export const getRecipientPub=async (user)=>{
 }
 export const recipientPublicGetter=async(user)=>{
     const {TorGet}=torUtils()
-    const rpubKey=await getRecipientPub()
+    const rpub=await getRecipientPub()
     try {
-if(rpubKey){
-    return rpubKey
+if(rpub){
+    return rpub
 }
 else{
     const ip=await getIPAddress()
     const rkey=await TorGet(`${ip}/users/${user}/details`)
-    await saveRecipientPub(user,rkey)
-    return rkey
+    await saveRecipientPub(user,rkey.public_key)
+    return rkey.public_key
 }
 }catch(error){
     console.log(error)

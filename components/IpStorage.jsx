@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUsername } from './Storage';
 import { router } from 'expo-router';
-import axios from 'axios';
 import torUtils from '../utils/torUtils';
 let DEFAULT_IP_ADDRESS = 'http://hwbl6cafsrwrcb4ulrsgst3jzfaf22a222744ovygty3ugkpnimygfid.onion';
 export const saveIPAddress = async (ipAddress) => {

@@ -7,6 +7,7 @@ import { createMessage ,readKey ,encrypt} from 'openpgp/dist/openpgp';
 
 const encrypter=async(message,recipient_pubkey)=>{
     const mes=await createMessage({text: message});
+    console.log(recipient_pubkey)
     const pubKey=await readKey({armoredKey: recipient_pubkey});
     const encMes=await encrypt({message: mes, encryptionKeys : [pubKey]});
     return encMes;
