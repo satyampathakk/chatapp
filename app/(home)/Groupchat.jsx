@@ -40,9 +40,9 @@ const Groupchat = () => {
     let intervalId;
     if (isFocused) {
       messageLoad(); 
-      intervalId = setInterval(messageLoad, 50000);
+      intervalId = setInterval(messageLoad, 15000);
     } else {
-      intervalId = setInterval(messageLoad, 300000);
+      intervalId = setInterval(messageLoad, 30000);
     }
     return () => clearInterval(intervalId);
   }, [isFocused,setMessages]);

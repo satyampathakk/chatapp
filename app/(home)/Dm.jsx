@@ -30,27 +30,41 @@ const Dm = () => {
     };
     Loader();
   }, []);
+  async function updateMessages(res) {
+    const updatedRes = await Promise.all(
+      res.map(async ({ msg, sender_username, recipient_username }) => ({
+        msg: await decrypt(msg),  // Await the decryption here
+        sender_username,
+        recipient_username,
+      }))
+    );
+    return updatedRes
+    }
+    useEffect(() => {
+      if (!edit) {
+        messageLoad();
+      }
+    }, [edit]); 
 
   const messageLoad = async () => {
     try {
-      const { TorGet } = torUtils();  // Ensure torUtils returns an object with TorGet
-      if (!ip || !currentUser || !ruser) return; // Add a check to avoid making invalid requests
-
+      const { TorGet } = torUtils();  
+      if (!ip || !currentUser || !ruser) return; 
       const res = await TorGet(`${ip}/messages/${currentUser}/${ruser}`);
       console.log(res); // Check if response is in expected format
-      setMessages(res);
+      const updatedRes = await updateMessages(res);
+      setMessages(updatedRes);
     } catch (error) {
       console.error(error);
     }
   };
-
   const handleRecieve = async () => {
     let intervalId;
     if (isFocused) {
       await messageLoad(); 
-      intervalId = setInterval(messageLoad, 50000);
+      intervalId = setInterval(messageLoad, 15000);
     } else {
-      intervalId = setInterval(messageLoad, 300000);
+      intervalId = setInterval(messageLoad, 30000);
     }
     return () => clearInterval(intervalId);
   };
@@ -71,15 +85,12 @@ const Dm = () => {
               placeholder="Type your message..."
               onChangeText={setRuser}
             /> 
-            <TouchableOpacity className="w-10" onPress={() => {
+            <TouchableOpacity className="w-10" onPress={async() => {
               if (edit) {
                 setEdit(false);
-                const fn = async () => {
                   await handleRecieve();
                   let rk = await recipientPublicGetter(ruser);
                   setKey(rk);
-                };
-                fn();
               } else {
                 setEdit(true);
               }
@@ -92,7 +103,7 @@ const Dm = () => {
             {messages.length > 0 ? (
               messages.map(({ msg, sender_username, recipient_username }) => (
                 <View key={Math.random()} className={`justify-center ${sender_username === currentUser ? 'items-end' : 'items-start'}`}>
-                  <MessageBox key={Math.random()} msg={msg} tmp={recipient_username} usr={sender_username} />
+                  <MessageBox msg={msg} tmp={recipient_username} usr={sender_username} />
                 </View>
               ))
             ) : (

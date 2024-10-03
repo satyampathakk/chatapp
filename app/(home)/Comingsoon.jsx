@@ -35,7 +35,7 @@ const Comingsoon = () => {
   useEffect(() => {
     if (isFocused) {
       fetchSystemUsage(); 
-      const interval = setInterval(fetchSystemUsage, 50000);
+      const interval = setInterval(fetchSystemUsage, 20000);
       return () => clearInterval(interval); 
     }
   }, [isFocused]);
