@@ -19,7 +19,7 @@ const getDecryptedPrivateKey = async () => {
 
 const decryptMessage = async (mes) => {
   const decmes = await openpgp.readMessage({ armoredMessage: mes });
-  const priKey = await getDecryptedPrivateKey();  // Use cached key
+  const priKey = await getDecryptedPrivateKey(); 
 
   const { data: decryptedMessage } = await openpgp.decrypt({
     message: decmes,

@@ -32,11 +32,19 @@ const Dm = () => {
   }, []);
   async function updateMessages(res) {
     const updatedRes = await Promise.all(
-      res.map(async ({ msg, sender_username, recipient_username }) => ({
+      res.map(async ({ msg, sender_username, recipient_username }) =>{ 
+        if(sender_username===currentUser){
+          return ({
+            msg: msg,
+            sender_username,
+            recipient_username,
+          })
+        }
+        return ({
         msg: await decrypt(msg),
         sender_username,
         recipient_username,
-      }))
+      })})
     );
     return updatedRes
     }
