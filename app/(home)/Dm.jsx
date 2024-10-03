@@ -10,7 +10,7 @@ import Conversation from '../../components/Conversation';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import torUtils from '../../utils/torUtils';
 import { recipientPublicGetter} from '../../utils/savepubkey';
-import { decrypt } from 'openpgp';
+import decrypt from '../../utils/decrypt';
 
 const Dm = () => {
   const [messages, setMessages] = useState([]);
@@ -33,7 +33,7 @@ const Dm = () => {
   async function updateMessages(res) {
     const updatedRes = await Promise.all(
       res.map(async ({ msg, sender_username, recipient_username }) => ({
-        msg: await decrypt(msg),  // Await the decryption here
+        msg: await decrypt(msg),
         sender_username,
         recipient_username,
       }))
@@ -51,7 +51,7 @@ const Dm = () => {
       const { TorGet } = torUtils();  
       if (!ip || !currentUser || !ruser) return; 
       const res = await TorGet(`${ip}/messages/${currentUser}/${ruser}`);
-      console.log(res); // Check if response is in expected format
+      console.log(res);
       const updatedRes = await updateMessages(res);
       setMessages(updatedRes);
     } catch (error) {
