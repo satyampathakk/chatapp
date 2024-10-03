@@ -68,7 +68,7 @@ const Comingsoon = () => {
           </View>
           <View className="h-10 bg-slate-600 z-10 flex-row items-center">
             <TextInput 
-              value='passphrase'
+              value={pass}
               editable={edit}
               className="flex-1 text-white text-center text-lg" 
               placeholder="Type your message..."
